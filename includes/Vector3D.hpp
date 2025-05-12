@@ -18,7 +18,6 @@ namespace Math {
         Vector3D(double x, double y, double z);
         ~Vector3D() = default;
     
-        // Opérateurs binaires (retournent un nouveau vecteur)
         Vector3D operator+(const Vector3D &other) const {
             return Vector3D(_x + other._x, _y + other._y, _z + other._z);
         }
@@ -32,7 +31,6 @@ namespace Math {
             return Vector3D(_x / scalar, _y / scalar, _z / scalar);
         }
     
-        // Opérateurs composés (modifient l’objet courant)
         Vector3D& operator+=(const Vector3D &other) {
             _x += other._x; _y += other._y; _z += other._z;
             return *this;
@@ -55,23 +53,21 @@ namespace Math {
         double dot(const Vector3D &other);
     };
 
-class Point3D {
-public:
-    double _x, _y, _z;
+    class Point3D {
+        public:
+            double _x, _y, _z;
+    
+            Point3D() : _x(0), _y(0), _z(0) {}
+            Point3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
+            ~Point3D() = default;
+    };
 
-    Point3D() : _x(0), _y(0), _z(0) {}
-    Point3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
-    ~Point3D() = default;
-};
-
-// Important : opération Point - Point → Vector
-inline Vector3D operator-(const Point3D &a, const Point3D &b) {
-    return Vector3D(a._x - b._x, a._y - b._y, a._z - b._z);
-}
-
-// Opération Point + Vector → Point
-inline Point3D operator+(const Point3D &p, const Vector3D &v) {
-    return Point3D(p._x + v._x, p._y + v._y, p._z + v._z);
-}
+    inline Vector3D operator-(const Point3D &a, const Point3D &b) {
+        return Vector3D(a._x - b._x, a._y - b._y, a._z - b._z);
+    }
+    
+    inline Point3D operator+(const Point3D &p, const Vector3D &v) {
+        return Point3D(p._x + v._x, p._y + v._y, p._z + v._z);
+    }
 
 }
