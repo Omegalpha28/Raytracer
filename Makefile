@@ -21,7 +21,7 @@ OBJ  = $(SRC:.cpp=.o)
 all:	comp
 
 comp:	$(OBJ)
-	$(COMP) -o $(NAME) $(OBJ) $(SFML_FLAGS)
+	$(COMP) -o $(NAME) $(OBJ) $(SFML_FLAGS) $(FLAGS)
 
 clean:
 	$(RM) $(OBJ)
