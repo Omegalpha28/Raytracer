@@ -64,7 +64,7 @@ namespace RayTracer {
             Sphere();
             ~Sphere();
             bool hits(const Ray &ray);
-            Math::Vector3D Sphere::normalAt(const Math::Point3D &point) const {
+            Math::Vector3D normalAt(const Math::Point3D &point) const {
                 Math::Vector3D n = point - _center;
                 return n / n.length();
             }
@@ -72,23 +72,35 @@ namespace RayTracer {
         private:
             Math::Point3D _center;
             double _radius;
-            Math::Vector3D normalAt(const Math::Point3D &point) const;
             Color _color;
     };
-
+    
     class Light {
         public:
             Light();
             ~Light();
-            Math::Vector3D Light::getDirectionTo(const Math::Point3D &point) const {
+            Math::Vector3D getDirectionTo(const Math::Point3D &point) const {
                 Math::Vector3D dir = _position - point;
                 return dir / dir.length();
-            }
-            RayTracer::Color computeLighting(Math::Point3D &point, RayTracer::Sphere &sphere);
+            };
         private:
             Math::Point3D _position;
             Math::Vector3D _direction;
             Color _color;
+    };
+
+    class Raytracer {
+        public:
+            Raytracer();
+            ~Raytracer();
+            void init();
+            void run();
+            RayTracer::Color computeLighting(const Math::Point3D &point, const Sphere &sphere, const Light &light);
+        private:
+            int _width;
+            int _height;
+            int _fieldOfView;
+            Math::Point3D _cameraPosition;
     };
 
     class Rectangle3D {
