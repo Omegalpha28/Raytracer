@@ -6,8 +6,6 @@
 */
 
 // Mediator
-#include <libconfig.h++>
-#include "includes/includes.hpp"
 #include "includes/Parser.hpp"
 #include "includes/Errors.hpp"
 
@@ -23,7 +21,7 @@ int main(int ac, char *av[])
     }
     std::string file = static_cast<std::string>(av[1]);
     RayTracer::Parser parser;
-    if (file == "-help") {
+    if (file == "-help" || file == "-h") {
         parser.displayHelp();
         return 0;
     }
