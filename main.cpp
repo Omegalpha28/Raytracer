@@ -9,20 +9,21 @@
 
 #include <libconfig.h++>
 #include "includes/includes.hpp"
+
 // #include "includes/RayTracer.hpp"
 
 int main(int ac, char *av[])
 {
     if (ac != 2)
         return 84;
-    if (av[1] == "-help") {
+    std::string file = static_cast <std::string>(av[1]);
+    if (file == "-help") {
         std::cout << "USAGE: ./raytracer <SCENE_FILE>\n" << "\tSCENE_FILE: scene configuration" << std::endl;
         return 0;
     }
     libconfig::Config cfg;
 
     try {
-        std::string file = static_cast <std::string>(av[1]);
         cfg.readFile(file);
     } catch (const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
