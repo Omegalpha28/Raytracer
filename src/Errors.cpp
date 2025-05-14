@@ -40,3 +40,6 @@ RayTracer::LoarderError::LoarderError(const std::string &message) : ErrorClass{"
 
 RayTracer::ExecError::ExecError(const std::string &message) : ErrorClass{"Execution Error: " + message}
 {}
+
+RayTracer::RayError::RayError(const std::string &message) : ErrorClass{"./raytracer: " + message}
+{}

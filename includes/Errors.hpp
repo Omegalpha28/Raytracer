@@ -18,21 +18,25 @@ namespace RayTracer {
             ErrorClass() = default;
             explicit ErrorClass(const std::string &message);
             ~ErrorClass() = default;
-
             void updateMessage(const std::string &message);
             void updateMessage(const char *message);
             void addMessage(const std::string &message);
             void addMessage(const char *message);
             const char *what() const noexcept override;
     };
-
     class LoarderError : public ErrorClass {
-        LoarderError(const std::string &Message);
-        ~LoarderError() = default;
+        public:
+            LoarderError(const std::string &Message);
+            ~LoarderError() = default;
     };
-
+    class RayError : public ErrorClass {
+        public:
+            RayError(const std::string &message);
+            ~RayError() = default;
+    };
     class ExecError : public ErrorClass {
-        ExecError(const std::string &message);
-        ~ExecError() = default;
+        public:
+            ExecError(const std::string &message);
+            ~ExecError() = default;
     };
 }
