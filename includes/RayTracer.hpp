@@ -10,11 +10,11 @@
 
 namespace RayTracer {
 
-    class color {
+    class Color {
         public:
-            color();
-            ~color();
-            color(int r, int g, int b, int a);
+            Color();
+            ~Color();
+            Color(int r, int g, int b, int a);
             int getR(void) {
                 return _r;
             };
@@ -69,7 +69,7 @@ namespace RayTracer {
         private:
             Math::Point3D _center;
             double _radius;
-            color _color;
+            Color _color;
     };
 
     class Light {
@@ -78,7 +78,7 @@ namespace RayTracer {
             ~Light();
         private:
             Math::Point3D _position;
-            color _color;
+            Color _color;
     };
 
     class Rectangle3D {
@@ -91,6 +91,6 @@ namespace RayTracer {
             Math::Point3D _origin;
             Math::Vector3D _bottom_side;
             Math::Vector3D _left_side;
-            color _color;
+            Color _color;
     };
 };
