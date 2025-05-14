@@ -85,8 +85,6 @@ namespace RayTracer {
         public:
             Raytracer();
             ~Raytracer();
-            void init();
-            void run();
             RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, const Light &light);
         private:
             int _width;
