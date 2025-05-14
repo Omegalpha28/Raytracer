@@ -20,7 +20,7 @@ double Math::Vector3D::length()
     return sqrt(_x * _x + _y * _y + _z * _z);
 }
 
-double Math::Vector3D::dot(const Math::Vector3D &vector2)
+double Math::Vector3D::dot(const Math::Vector3D &vector2) const
 {
     return _x * vector2._x + _y * vector2._y + _z * vector2._z;
 }

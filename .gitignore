@@ -2,10 +2,7 @@
 Test/
 
 #manual binaries
-server
-client
-jetpack_client
-jetpack_server
+raytracer
 
 #paterns
 vgcore.*

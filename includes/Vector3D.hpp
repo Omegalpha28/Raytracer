@@ -52,7 +52,7 @@ namespace Math {
     
         double length();
     
-        double dot(const Vector3D &other);
+        double dot(const Vector3D &other) const;
     };
 
     class Point3D {

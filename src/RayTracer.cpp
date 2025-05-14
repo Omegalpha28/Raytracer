@@ -7,6 +7,10 @@
 
 #include "../includes/RayTracer.hpp"
 
+RayTracer::Color::~Color()
+{
+}
+
 RayTracer::Ray::Ray()
 {
     _vector = Math::Vector3D();
