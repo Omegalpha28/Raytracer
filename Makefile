@@ -15,6 +15,7 @@ NAME = raytracer
 SRC = main.cpp				\
 		src/RayTracer.cpp	\
 		src/Vector3D.cpp	\
+		src/Errors.cpp
 
 OBJ  = $(SRC:.cpp=.o)
 
