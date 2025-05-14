@@ -14,7 +14,7 @@ namespace RayTracer {
         public:
             Color(int r = 0, int g = 0, int b = 0, int a = 255)
                 : _r(r), _g(g), _b(b), _a(a) {}
-            ~Color();
+            ~Color() = default;
             int getR(void) {
                 return _r;
             };
@@ -64,11 +64,15 @@ namespace RayTracer {
             Sphere();
             ~Sphere();
             bool hits(const Ray &ray);
-
+            Math::Vector3D Sphere::normalAt(const Math::Point3D &point) const {
+                Math::Vector3D n = point - _center;
+                return n / n.length();
+            }
         protected:
         private:
             Math::Point3D _center;
             double _radius;
+            Math::Vector3D normalAt(const Math::Point3D &point) const;
             Color _color;
     };
 
@@ -76,8 +80,14 @@ namespace RayTracer {
         public:
             Light();
             ~Light();
+            Math::Vector3D Light::getDirectionTo(const Math::Point3D &point) const {
+                Math::Vector3D dir = _position - point;
+                return dir / dir.length();
+            }
+            RayTracer::Color computeLighting(Math::Point3D &point, RayTracer::Sphere &sphere);
         private:
             Math::Point3D _position;
+            Math::Vector3D _direction;
             Color _color;
     };
 
