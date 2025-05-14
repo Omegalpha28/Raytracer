@@ -10,6 +10,27 @@
 
 namespace RayTracer {
 
+    class Ray {
+        public:
+            Ray();
+            ~Ray();
+            Ray(Math::Vector3D &vector, Math::Point3D &sp);
+
+            Math::Vector3D _vector;
+            Math::Point3D _sp;
+
+        protected:
+        private:
+    };
+
+    class Primitives {
+        public:
+            Primitives() = default;
+            virtual ~Primitives() = default;
+            virtual bool hits(const Ray &ray) = 0;
+            virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
+    };
+
     class Color {
         public:
             Color(int r = 0, int g = 0, int b = 0, int a = 255)
@@ -46,35 +67,6 @@ namespace RayTracer {
             int _a;
     };
 
-    class Ray {
-        public:
-            Ray();
-            ~Ray();
-            Ray(Math::Vector3D &vector, Math::Point3D &sp);
-
-            Math::Vector3D _vector;
-            Math::Point3D _sp;
-
-        protected:
-        private:
-    };
-
-    class Sphere {
-        public:
-            Sphere();
-            ~Sphere();
-            bool hits(const Ray &ray);
-            Math::Vector3D normalAt(const Math::Point3D &point) const {
-                Math::Vector3D n = point - _center;
-                return n / n.length();
-            }
-        protected:
-        private:
-            Math::Point3D _center;
-            double _radius;
-            Color _color;
-    };
-    
     class Light {
         public:
             Light();
@@ -95,7 +87,7 @@ namespace RayTracer {
             ~Raytracer();
             void init();
             void run();
-            RayTracer::Color computeLighting(const Math::Point3D &point, const Sphere &sphere, const Light &light);
+            RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, const Light &light);
         private:
             int _width;
             int _height;
@@ -103,10 +95,31 @@ namespace RayTracer {
             Math::Point3D _cameraPosition;
     };
 
-    class Rectangle3D {
+    class Sphere : public Primitives {
+        public:
+            Sphere();
+            ~Sphere();
+            bool hits(const Ray &ray) override;
+            Math::Vector3D normalAt(const Math::Point3D &point) override {
+                Math::Vector3D n = point - _center;
+                return n / n.length();
+            }
+        protected:
+        private:
+            Math::Point3D _center;
+            double _radius;
+            Color _color;
+    };
+
+    class Rectangle3D : public Primitives {
         public:
             Rectangle3D();
             ~Rectangle3D();
+            bool hits(const Ray &ray) override;
+            Math::Vector3D normalAt(const Math::Point3D &point) override {
+                Math::Vector3D n(0, 1, 0);
+                return n;
+            }
 
         protected:
         private:
