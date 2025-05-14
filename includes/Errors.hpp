@@ -28,11 +28,11 @@ namespace RayTracer {
 
     class LoarderError : public ErrorClass {
         LoarderError(const std::string &Message);
-        ~LoarderError();
+        ~LoarderError() = default;
     };
 
     class ExecError : public ErrorClass {
         ExecError(const std::string &message);
-        ~ExecError();
+        ~ExecError() = default;
     };
 }

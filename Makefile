@@ -8,7 +8,7 @@
 COMP = g++
 FLAGS    = -Wall -Wextra -Werror -std=c++17 -fPIC -fno-gnu-unique -lconfig++
 RM        = rm -rf
-SFML_FLAGS = -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lX11 -lXrandr -lXcursor -lXrender -lGL -lGLU -lpthread -ludev -lXi -fPIC
+SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lXrandr -lXcursor -lXrender -lGL -lGLU -lpthread -ludev -lXi -fPIC
 
 NAME = raytracer
 
