@@ -12,10 +12,11 @@ SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lXrandr -lXcurso
 
 NAME = raytracer
 
-SRC = main.cpp				\
-		src/RayTracer.cpp	\
-		src/Vector3D.cpp	\
-		src/Errors.cpp
+SRC = main.cpp              \
+		src/RayTracer.cpp   \
+		src/Vector3D.cpp    \
+		src/Errors.cpp      \
+		src/Parser.cpp
 
 OBJ  = $(SRC:.cpp=.o)
 
