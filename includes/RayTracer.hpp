@@ -12,9 +12,9 @@ namespace RayTracer {
 
     class Color {
         public:
-            Color();
+            Color(int r = 0, int g = 0, int b = 0, int a = 255)
+                : _r(r), _g(g), _b(b), _a(a) {}
             ~Color();
-            Color(int r, int g, int b, int a);
             int getR(void) {
                 return _r;
             };
