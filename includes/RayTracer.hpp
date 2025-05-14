@@ -35,4 +35,16 @@ namespace RayTracer {
             double _radius;
     };
 
+    class Rectangle3D {
+        public:
+            Rectangle3D();
+            ~Rectangle3D();
+
+        protected:
+        private:
+            Math::Point3D _origin;
+            Math::Vector3D _bottom_side;
+            Math::Vector3D _left_side;
+
+    };
 };

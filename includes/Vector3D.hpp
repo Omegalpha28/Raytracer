@@ -12,7 +12,9 @@ namespace Math {
 
     class Vector3D {
     public:
-        double _x, _y, _z;
+        double _x;
+        double _y;
+        double _z;
     
         Vector3D();
         Vector3D(double x, double y, double z);
@@ -56,7 +58,7 @@ namespace Math {
     class Point3D {
         public:
             double _x, _y, _z;
-    
+
             Point3D() : _x(0), _y(0), _z(0) {}
             Point3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
             ~Point3D() = default;
