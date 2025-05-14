@@ -5,6 +5,7 @@
 ** Parser
 */
 #include "../includes/Parser.hpp"
+#include "../includes/Errors.hpp"
 
 RayTracer::Parser::Parser() : _width(0), _height(0), _fov(0), _ambientLight(0), _diffuseLight(0)
 {}
@@ -23,11 +24,20 @@ int RayTracer::Parser::parseConfigFile(const std::string &filePath)
     try {
         _cfg.readFile(filePath.c_str());
     } catch (const libconfig::FileIOException &fioex) {
-        std::cerr << "I/O error while reading file." << std::endl;
+        try {
+            throw RayTracer::ParseError("I/O error while reading file");
+        } catch (const RayTracer::ParseError &error) {
+            std::cerr << error.what() << std::endl;
+        }
         return 84;
     } catch (const libconfig::ParseException &pex) {
-        std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                  << " - " << pex.getError() << std::endl;
+        try {
+            std::string errorMsg = "Parse error at " + std::string(pex.getFile()) + ":" + 
+                                  std::to_string(pex.getLine()) + " - " + pex.getError();
+            throw RayTracer::ParseError(errorMsg);
+        } catch (const RayTracer::ParseError &error) {
+            std::cerr << error.what() << std::endl;
+        }
         return 84;
     }
     try {
@@ -38,7 +48,11 @@ int RayTracer::Parser::parseConfigFile(const std::string &filePath)
         if (parseLights() != 0)
             return 84;
     } catch (const libconfig::SettingNotFoundException &nfex) {
-        std::cerr << "A setting was not found: " << nfex.getPath() << std::endl;
+        try {
+            throw RayTracer::ParseError(std::string("A setting was not found: ") + nfex.getPath());
+        } catch (const RayTracer::ParseError &error) {
+            std::cerr << error.what() << std::endl;
+        }
         return 84;
     }
     return 0;
