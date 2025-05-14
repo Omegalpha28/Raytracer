@@ -60,7 +60,7 @@ namespace Math {
             double _x, _y, _z;
 
             Point3D() : _x(0), _y(0), _z(0) {}
-            Point3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
+            Point3D(double x, double y, double z);
             ~Point3D() = default;
     };
 
