@@ -15,13 +15,14 @@ NAME = raytracer
 SRC = main.cpp				\
 		src/RayTracer.cpp	\
 		src/Vector3D.cpp	\
+		src/Errors.cpp
 
 OBJ  = $(SRC:.cpp=.o)
 
 all:	comp
 
 comp:	$(OBJ)
-	$(COMP) -o $(NAME) $(OBJ) $(SFML_FLAGS)
+	$(COMP) -o $(NAME) $(OBJ) $(SFML_FLAGS) $(FLAGS)
 
 clean:
 	$(RM) $(OBJ)
