@@ -43,3 +43,6 @@ RayTracer::ExecError::ExecError(const std::string &message) : ErrorClass{"Execut
 
 RayTracer::RayError::RayError(const std::string &message) : ErrorClass{"./raytracer: " + message}
 {}
+
+RayTracer::ParseError::ParseError(const std::string &message) : ErrorClass{"Parsing: " + message}
+{}

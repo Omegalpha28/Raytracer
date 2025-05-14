@@ -39,4 +39,9 @@ namespace RayTracer {
             ExecError(const std::string &message);
             ~ExecError() = default;
     };
+    class ParseError : public ErrorClass {
+        public:
+            ParseError(const std::string &message);
+            ~ParseError() = default;
+    };
 }
