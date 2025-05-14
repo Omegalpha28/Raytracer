@@ -5,7 +5,7 @@
 ** ErrorClass
 */
 
-#include "includes/Errors.hpp"
+#include "../includes/Errors.hpp"
 
 RayTracer::ErrorClass::ErrorClass(const std::string &message) : _Message{message}
 {}

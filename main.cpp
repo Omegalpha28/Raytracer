@@ -8,7 +8,8 @@
 // Mediator 
 
 #include <libconfig.h++>
-#include "includes/RayTracer.hpp"
+#include "includes/includes.hpp"
+// #include "includes/RayTracer.hpp"
 
 int main(int ac, char *av[])
 {
@@ -25,13 +26,12 @@ int main(int ac, char *av[])
         cfg.readFile(file);
     } catch (const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
-        return 1;
+        return 84;
     } catch (const libconfig::ParseException &pex) {
         std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
                   << " - " << pex.getError() << std::endl;
-        return 1;
+        return 84;
     }
-
     try {
         const libconfig::Setting &camera = cfg.lookup("camera");
 
@@ -73,7 +73,7 @@ int main(int ac, char *av[])
 
     } catch (const libconfig::SettingNotFoundException &nfex) {
         std::cerr << "A setting was not found: " << nfex.getPath() << std::endl;
-        return 1;
+        return 84;
     }
 
     return 0;
