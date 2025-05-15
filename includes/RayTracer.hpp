@@ -28,6 +28,7 @@ namespace RayTracer {
             Primitives() = default;
             virtual ~Primitives() = default;
             virtual bool hits(const Ray &ray) = 0;
+            virtual Color getColor() const = 0;
             virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
     };
 
@@ -85,6 +86,7 @@ namespace RayTracer {
         public:
             Raytracer();
             ~Raytracer();
+            void render();
             RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, const Light &light);
         private:
             int _width;
@@ -95,13 +97,15 @@ namespace RayTracer {
 
     class Sphere : public Primitives {
         public:
-            Sphere();
+            Sphere(Math::Point3D center, double radius, Color color) 
+                : _center(center), _radius(radius), _color(color) {};
             ~Sphere();
             bool hits(const Ray &ray) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 Math::Vector3D n = point - _center;
                 return n / n.length();
-            }
+            };
+            Color getColor() const override { return _color; };
         protected:
         private:
             Math::Point3D _center;
@@ -117,8 +121,8 @@ namespace RayTracer {
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 Math::Vector3D n(0, 1, 0);
                 return n;
-            }
-
+            };
+            Color getColor() const override { return _color; };
         protected:
         private:
             Math::Point3D _origin;
