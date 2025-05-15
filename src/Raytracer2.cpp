@@ -52,7 +52,7 @@ void RayTracer::Raytracer::render()
             }
             Color color(0, 0, 0);
             if (closest) {
-                Math::Point3D hitPoint = _cameraPosition + dir * 5; // fake intersection point
+                Math::Point3D hitPoint = _cameraPosition + dir * 5;
                 color = computeLighting(hitPoint, closest, light);
             }
             ppm << color.getR() << " " << color.getG() << " " << color.getB() << " ";
