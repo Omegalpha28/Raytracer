@@ -32,7 +32,7 @@ namespace Math {
         Vector3D operator/(double scalar) const {
             return Vector3D(_x / scalar, _y / scalar, _z / scalar);
         }
-    
+
         Vector3D& operator+=(const Vector3D &other) {
             _x += other._x; _y += other._y; _z += other._z;
             return *this;
@@ -49,9 +49,16 @@ namespace Math {
             _x /= scalar; _y /= scalar; _z /= scalar;
             return *this;
         }
-    
+        Math::Vector3D Math::Vector3D::cross(const Math::Vector3D &v) const {
+            return Math::Vector3D(
+                _y * v._z - _z * v._y,
+                _z * v._x - _x * v._z,
+                _x * v._y - _y * v._x
+            );
+        }
+
         double length();
-    
+
         double dot(const Vector3D &other) const;
     };
 
@@ -67,7 +74,7 @@ namespace Math {
     inline Vector3D operator-(const Point3D &a, const Point3D &b) {
         return Vector3D(a._x - b._x, a._y - b._y, a._z - b._z);
     }
-    
+
     inline Point3D operator+(const Point3D &p, const Vector3D &v) {
         return Point3D(p._x + v._x, p._y + v._y, p._z + v._z);
     }

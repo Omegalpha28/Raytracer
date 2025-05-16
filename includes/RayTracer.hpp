@@ -97,7 +97,7 @@ namespace RayTracer {
 
     class Sphere : public Primitives {
         public:
-            Sphere(Math::Point3D center, double radius, Color color) 
+            Sphere(Math::Point3D center, double radius, Color color)
                 : _center(center), _radius(radius), _color(color) {};
             ~Sphere();
             bool hits(const Ray &ray) override;
@@ -113,21 +113,59 @@ namespace RayTracer {
             Color _color;
     };
 
+    class Plane : public Primitives {
+        public:
+            Plane();
+            Plane(char axis, double position, Color color);
+            ~Plane();
+            bool hits(const Ray &ray) override;
+            Math::Vector3D normalAt(const Math::Point3D &point) override {
+                if (_axis == 'X') return Math::Vector3D(1, 0, 0);
+                else if (_axis == 'Y') return Math::Vector3D(0, 1, 0);
+                else return Math::Vector3D(0, 0, 1);
+            }
+
+        private:
+            char _axis;
+            double _position;
+            Color _color;
+    };
+
+    class Triangle : public Primitives {
+        public:
+            Triangle();
+            Triangle(const Math::Point3D &v0, const Math::Point3D &v1, const Math::Point3D &v2, const Color &color);
+            ~Triangle();
+            bool hits(const Ray &ray) override;
+            Math::Vector3D normalAt(const Math::Point3D &point) override {
+                return _normal;
+            }
+
+        private:
+            Math::Point3D _v0;
+            Math::Point3D _v1;
+            Math::Point3D _v2;
+            Math::Vector3D _normal;
+            Color _color;
+    };
+
     class Rectangle3D : public Primitives {
         public:
             Rectangle3D();
+            Rectangle3D(const Math::Point3D &origin, const Math::Vector3D &bottom_side, 
+                        const Math::Vector3D &left_side, const Color &color);
             ~Rectangle3D();
             bool hits(const Ray &ray) override;
-            Math::Vector3D normalAt(const Math::Point3D &point) override {
-                Math::Vector3D n(0, 1, 0);
-                return n;
-            };
+            Math::Vector3D normalAt(const Math::Point3D &point) override;
             Color getColor() const override { return _color; };
+
         protected:
         private:
             Math::Point3D _origin;
             Math::Vector3D _bottom_side;
             Math::Vector3D _left_side;
             Color _color;
+            std::shared_ptr<Triangle> _triangle1;
+            std::shared_ptr<Triangle> _triangle2;
     };
 };
