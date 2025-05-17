@@ -23,41 +23,32 @@ namespace RayTracer {
         private:
     };
 
-    class Primitives {
-        public:
-            Primitives() = default;
-            virtual ~Primitives() = default;
-            virtual bool hits(const Ray &ray) = 0;
-            virtual Color getColor() const = 0;
-            virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
-    };
-
     class Color {
         public:
             Color(int r = 0, int g = 0, int b = 0, int a = 255)
                 : _r(r), _g(g), _b(b), _a(a) {}
             ~Color() = default;
-            int getR(void) {
+            int getR(void) const {
                 return _r;
-            };
-            int getG(void) {
+            }
+            int getG(void) const {
                 return _g;
-            };
-            int getB(void) {
+            }
+            int getB(void) const {
                 return _b;
-            };
-            int getA(void) {
+            }
+            int getA(void) const {
                 return _a;
-            };
+            }
             void setR(int r) {
                 _r = r;
-            };
+            }
             void setG(int g) {
                 _g = g;
-            };
+            }
             void setB(int b) {
                 _b = b;
-            };
+            }
             void setA(int a) {
                 _a = a;
             };
@@ -66,6 +57,15 @@ namespace RayTracer {
             int _g;
             int _b;
             int _a;
+    };
+
+    class Primitives {
+        public:
+            Primitives() = default;
+            virtual ~Primitives() = default;
+            virtual bool hits(const Ray &ray) = 0;
+            virtual Color getColor() const = 0;
+            virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
     };
 
     class Light {
@@ -97,8 +97,7 @@ namespace RayTracer {
 
     class Sphere : public Primitives {
         public:
-            Sphere(Math::Point3D center, double radius, Color color)
-                : _center(center), _radius(radius), _color(color) {};
+            Sphere(Math::Point3D center, double radius, Color color);
             ~Sphere();
             bool hits(const Ray &ray) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override {
@@ -140,6 +139,7 @@ namespace RayTracer {
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 return _normal;
             }
+            Color getColor() const override { return _color; }
 
         private:
             Math::Point3D _v0;

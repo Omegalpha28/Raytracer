@@ -49,7 +49,7 @@ namespace Math {
             _x /= scalar; _y /= scalar; _z /= scalar;
             return *this;
         }
-        Math::Vector3D Math::Vector3D::cross(const Math::Vector3D &v) const {
+        Vector3D cross(const Math::Vector3D &v) const {
             return Math::Vector3D(
                 _y * v._z - _z * v._y,
                 _z * v._x - _x * v._z,
