@@ -14,6 +14,7 @@ NAME = raytracer
 
 SRC = main.cpp              \
 		src/RayTracer.cpp   \
+		src/Raytracer2.cpp	\
 		src/Vector3D.cpp    \
 		src/Errors.cpp      \
 		src/Parser.cpp

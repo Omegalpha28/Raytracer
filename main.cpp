@@ -28,5 +28,7 @@ int main(int ac, char *av[])
     }
     if (parser.parseConfigFile(file) != 0)
         return 84;
+    RayTracer::Raytracer tracer;
+    tracer.render();
     return 0;
 }
