@@ -30,14 +30,27 @@ RayTracer::Sphere::~Sphere()
 {
 }
 
-bool RayTracer::Sphere::hits(const RayTracer::Ray &ray)
+bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, double &t)
 {
     Math::Vector3D oc = ray._sp - _center;
     double a = ray._vector.dot(ray._vector);
     double b = 2.0 * oc.dot(ray._vector);
     double c = oc.dot(oc) - _radius * _radius;
     double discriminant = b * b - 4 * a * c;
-    return (discriminant >= 0);
+
+    if (discriminant < 0)
+        return false;
+    double sqrtD = std::sqrt(discriminant);
+    double t1 = (-b - sqrtD) / (2 * a);
+    double t2 = (-b + sqrtD) / (2 * a);
+    if (t1 > 0.001) {
+        t = t1;
+        return true;
+    } else if (t2 > 0.001) {
+        t = t2;
+        return true;
+    }
+    return false;
 }
 
 RayTracer::Plane::Plane(char axis, double position, Color color)
@@ -49,7 +62,7 @@ RayTracer::Plane::~Plane()
 {
 }
 
-bool RayTracer::Plane::hits(const RayTracer::Ray &ray)
+bool RayTracer::Plane::hits(const RayTracer::Ray &ray, double &t)
 {
     double component;
 
@@ -58,7 +71,6 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray)
     else if (_axis == 'Z') component = ray._vector._z;
 
     if (std::fabs(component) < 1e-8) return false;
-    double t;
 
     if      (_axis == 'X') t = (_position - ray._sp._x) / ray._vector._x;
     else if (_axis == 'Y') t = (_position - ray._sp._y) / ray._vector._y;
@@ -80,7 +92,7 @@ RayTracer::Triangle::~Triangle()
 {
 }
 
-bool RayTracer::Triangle::hits(const RayTracer::Ray &ray)
+bool RayTracer::Triangle::hits(const RayTracer::Ray &ray, double &t)
 {
     Math::Vector3D edge1 = _v1 - _v0;
     Math::Vector3D edge2 = _v2 - _v0;
@@ -98,8 +110,8 @@ bool RayTracer::Triangle::hits(const RayTracer::Ray &ray)
     double v = f * ray._vector.dot(q);
     if (v < 0.0 || u + v > 1.0) return false;
 
-    double t = f * edge2.dot(q);
-    return (t >= 0.0);
+    double t2 = f * edge2.dot(q);
+    return (t2 >= 0.0);
 }
 
 RayTracer::Rectangle3D::Rectangle3D(const Math::Point3D &origin,
@@ -122,9 +134,9 @@ RayTracer::Rectangle3D::~Rectangle3D()
 {
 }
 
-bool RayTracer::Rectangle3D::hits(const RayTracer::Ray &ray)
+bool RayTracer::Rectangle3D::hits(const RayTracer::Ray &ray, double &t)
 {
-    return (_triangle1->hits(ray) || _triangle2->hits(ray));
+    return (_triangle1->hits(ray, t) || _triangle2->hits(ray, t));
 }
 
 Math::Vector3D RayTracer::Rectangle3D::normalAt(const Math::Point3D &point)

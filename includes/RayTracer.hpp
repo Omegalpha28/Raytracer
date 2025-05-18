@@ -64,7 +64,7 @@ namespace RayTracer {
         public:
             Primitives() = default;
             virtual ~Primitives() = default;
-            virtual bool hits(const Ray &ray) = 0;
+            virtual bool hits(const Ray &ray, double &t) = 0;
             virtual Color getColor() const = 0;
             virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
     };
@@ -102,7 +102,7 @@ namespace RayTracer {
         public:
             Sphere(Math::Point3D center, double radius, Color color);
             ~Sphere();
-            bool hits(const Ray &ray) override;
+            bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 Math::Vector3D n = point - _center;
                 return n / n.length();
@@ -120,7 +120,7 @@ namespace RayTracer {
             Plane();
             Plane(char axis, double position, Color color);
             ~Plane();
-            bool hits(const Ray &ray) override;
+            bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 if (_axis == 'X') return Math::Vector3D(1, 0, 0);
                 else if (_axis == 'Y') return Math::Vector3D(0, 1, 0);
@@ -138,7 +138,7 @@ namespace RayTracer {
             Triangle();
             Triangle(const Math::Point3D &v0, const Math::Point3D &v1, const Math::Point3D &v2, const Color &color);
             ~Triangle();
-            bool hits(const Ray &ray) override;
+            bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override {
                 return _normal;
             }
@@ -158,7 +158,7 @@ namespace RayTracer {
             Rectangle3D(const Math::Point3D &origin, const Math::Vector3D &bottom_side, 
                         const Math::Vector3D &left_side, const Color &color);
             ~Rectangle3D();
-            bool hits(const Ray &ray) override;
+            bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override;
             Color getColor() const override { return _color; };
 
