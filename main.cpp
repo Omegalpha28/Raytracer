@@ -6,7 +6,6 @@
 */
 
 // Mediator
-#include "includes/Parser.hpp"
 #include "includes/Errors.hpp"
 #include "includes/RayTracer.hpp"
 

@@ -4,7 +4,7 @@
 ** File description:
 ** Parser
 */
-#include "../includes/Parser.hpp"
+#include "../includes/RayTracer.hpp"
 #include "../includes/Errors.hpp"
 
 RayTracer::Parser::Parser() : _width(0), _height(0), _fov(0), _ambientLight(0), _diffuseLight(0), _posX(0), _posY(0), _posZ(0), _rotX(0), _rotY(0), _rotZ(0)
@@ -78,30 +78,80 @@ int RayTracer::Parser::parseCameraSettings()
     return 0;
 }
 
-
-
 int RayTracer::Parser::parsePrimitives()
 {
-    const libconfig::Setting &spheres = _cfg.lookup("primitives.spheres");
-    int sphereCount = spheres.getLength();
-    std::cout << "Number of spheres: " << sphereCount << "\n";
-
-    for (int i = 0; i < sphereCount; ++i) {
-        const libconfig::Setting &s = spheres[i];
-        int x, y, z, r;
-        s.lookupValue("x", x);
-        s.lookupValue("y", y);
-        s.lookupValue("z", z);
-        s.lookupValue("r", r);
-        std::cout << "Sphere " << i << " at (" << x << ", " << y << ", " << z
-                  << ") with radius " << r << "\n";
-        const libconfig::Setting &color = s["color"];
-        int cr, cg, cb;
-        color.lookupValue("r", cr);
-        color.lookupValue("g", cg);
-        color.lookupValue("b", cb);
-        std::cout << "Color: (" << cr << ", " << cg << ", " << cb << ")\n";
+    _scene.clear();
+    const libconfig::Setting &root = _cfg.lookup("primitives");
+    // === Spheres ===
+    if (root.exists("spheres")) {
+        const libconfig::Setting &spheres = root["spheres"];
+        for (int i = 0; i < spheres.getLength(); ++i) {
+            const libconfig::Setting &s = spheres[i];
+            int x, y, z, r;
+            int cr, cg, cb;
+            s.lookupValue("x", x);
+            s.lookupValue("y", y);
+            s.lookupValue("z", z);
+            s.lookupValue("r", r);
+            const libconfig::Setting &color = s["color"];
+            color.lookupValue("r", cr);
+            color.lookupValue("g", cg);
+            color.lookupValue("b", cb);
+            _scene.push_back(std::make_shared<Sphere>(
+                Math::Point3D(x, y, z),
+                static_cast<double>(r),
+                Color(cr, cg, cb)
+            ));
+        }
     }
+    // === Planes ===
+    if (root.exists("planes")) {
+        const libconfig::Setting &planes = root["planes"];
+        for (int i = 0; i < planes.getLength(); ++i) {
+            const libconfig::Setting &p = planes[i];
+            std::string axis;
+            double position;
+            int cr, cg, cb;
+            p.lookupValue("axis", axis);
+            p.lookupValue("position", position);
+            const libconfig::Setting &color = p["color"];
+            color.lookupValue("r", cr);
+            color.lookupValue("g", cg);
+            color.lookupValue("b", cb);
+            _scene.push_back(std::make_shared<Plane>(
+                axis[0], position,
+                Color(cr, cg, cb)
+            ));
+        }
+    }
+    // === Rectangles ===
+    if (root.exists("rectangles")) {
+        const libconfig::Setting &rects = root["rectangles"];
+        for (int i = 0; i < rects.getLength(); ++i) {
+            const libconfig::Setting &r = rects[i];
+            const libconfig::Setting &origin = r["origin"];
+            const libconfig::Setting &bottom = r["bottom_side"];
+            const libconfig::Setting &left = r["left_side"];
+            const libconfig::Setting &color = r["color"];
+            Math::Point3D o(
+                origin["x"], origin["y"], origin["z"]
+            );
+            Math::Vector3D b(
+                bottom["x"], bottom["y"], bottom["z"]
+            );
+            Math::Vector3D l(
+                left["x"], left["y"], left["z"]
+            );
+            int cr, cg, cb;
+            color.lookupValue("r", cr);
+            color.lookupValue("g", cg);
+            color.lookupValue("b", cb);
+            _scene.push_back(std::make_shared<Rectangle3D>(
+                o, b, l, Color(cr, cg, cb)
+            ));
+        }
+    }
+    std::cout << "Primitives parsed" << std::endl;
     return 0;
 }
 
@@ -192,4 +242,39 @@ float RayTracer::Parser::getDirY() const
 float RayTracer::Parser::getDirZ() const
 {
     return _dirZ;
+}
+
+std::vector<std::shared_ptr<RayTracer::Primitives>> RayTracer::Parser::getScene() const
+{
+    return _scene;
+}
+
+float RayTracer::Parser::getCameraPosX() const
+{
+    return _posX;
+}
+
+float RayTracer::Parser::getCameraPosY() const
+{
+    return _posY;
+}
+
+float RayTracer::Parser::getCameraPosZ() const
+{
+    return _posZ;
+}
+
+float RayTracer::Parser::getCameraRotX() const
+{
+    return _rotX;
+}
+
+float RayTracer::Parser::getCameraRotY() const
+{
+    return _rotY;
+}
+
+float RayTracer::Parser::getCameraRotZ() const
+{
+    return _rotZ;
 }

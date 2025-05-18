@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include "includes.hpp"
+#include "RayTracer.hpp"
 
 namespace RayTracer {
     class Parser {
@@ -28,6 +29,7 @@ namespace RayTracer {
         int parseCameraSettings();
         int parsePrimitives();
         int parseLights();
+        std::vector<std::shared_ptr<Primitives>> _scene;
     public:
         Parser();
         ~Parser();
@@ -37,6 +39,7 @@ namespace RayTracer {
         int getHeight() const;
         float getFov() const;
         public:
+        std::vector<std::shared_ptr<Primitives>> getScene() const;
         float getCameraPosX() const;
         float getCameraPosY() const;
         float getCameraPosZ() const;

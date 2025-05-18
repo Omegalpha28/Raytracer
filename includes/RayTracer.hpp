@@ -7,7 +7,6 @@
 
 #pragma once
 #include "Vector3D.hpp"
-#include "Parser.hpp"
 
 namespace RayTracer {
 
@@ -84,12 +83,54 @@ namespace RayTracer {
             Color _color;
     };
 
+    class Parser {
+    private:
+        libconfig::Config _cfg;
+        int _width;
+        int _height;
+        float _fov;
+        float _ambientLight;
+        float _diffuseLight;
+        int _posX, _posY, _posZ;
+        int _rotX, _rotY, _rotZ;
+        int _dirX, _dirY, _dirZ;
+        int _pointPosX, _pointPosY, _pointPosZ;
+        int parseCameraSettings();
+        int parsePrimitives();
+        int parseLights();
+        std::vector<std::shared_ptr<Primitives>> _scene;
+    public:
+        Parser();
+        ~Parser();
+        int parseConfigFile(const std::string &filePath);
+        void displayHelp() const;
+        int getWidth() const;
+        int getHeight() const;
+        float getFov() const;
+        public:
+        std::vector<std::shared_ptr<Primitives>> getScene() const;
+        float getCameraPosX() const;
+        float getCameraPosY() const;
+        float getCameraPosZ() const;
+        float getCameraRotX() const;
+        float getCameraRotY() const;
+        float getCameraRotZ() const;
+        float getPointPosX() const;
+        float getPointPosY() const;
+        float getPointPosZ() const;
+        float getDirX() const;
+        float getDirY() const;
+        float getDirZ() const;
+        float getAmbientLight() const;
+        float getDiffuseLight() const;
+    };
+
     class Raytracer {
         public:
-            Raytracer(RayTracer::Parser &Parser);
+            Raytracer(Parser &Parser);
             Raytracer();
             ~Raytracer() = default;
-            void render(RayTracer::Parser &Parser);
+            void render(Parser &Parser);
             RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, const Light &light);
         private:
             int _width;
@@ -126,7 +167,7 @@ namespace RayTracer {
                 else if (_axis == 'Y') return Math::Vector3D(0, 1, 0);
                 else return Math::Vector3D(0, 0, 1);
             }
-
+            Color getColor() const override { return _color; }
         private:
             char _axis;
             double _position;
@@ -143,7 +184,6 @@ namespace RayTracer {
                 return _normal;
             }
             Color getColor() const override { return _color; }
-
         private:
             Math::Point3D _v0;
             Math::Point3D _v1;
@@ -161,7 +201,6 @@ namespace RayTracer {
             bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override;
             Color getColor() const override { return _color; };
-
         protected:
         private:
             Math::Point3D _origin;

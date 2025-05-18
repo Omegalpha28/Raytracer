@@ -28,13 +28,12 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
 {
     _width = Parser.getWidth();
     _height = Parser.getHeight();
-    _fieldOfView = 90;
-    _cameraPosition = Math::Point3D(0, 0, 0);
-
-    std::vector<std::shared_ptr<Primitives>> scene;
-    scene.push_back(std::make_shared<Sphere>(Math::Point3D(0, 0, -5), 1.0, Color(255, 0, 0)));
-
-    Light light(Math::Point3D(), Color(255, 255, 255));
+    _fieldOfView = Parser.getFov();
+    _cameraPosition = Math::Point3D( Parser.getCameraPosX(), Parser.getCameraPosY(), Parser.getCameraPosZ());
+    std::vector<std::shared_ptr<Primitives>> scene = Parser.getScene();
+    Math::Point3D lightPos( Parser.getPointPosX(), Parser.getPointPosY(), Parser.getPointPosZ());
+    Color lightColor(255, 255, 255);
+    Light light(lightPos, lightColor);
     std::ofstream ppm("output.ppm");
     ppm << "P3\n" << _width << " " << _height << "\n255\n";
 
@@ -45,11 +44,8 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
             Math::Vector3D dir(px, py, -1);
             dir = dir / dir.length();
             Ray ray(dir, _cameraPosition);
-
             double closestT = std::numeric_limits<double>::max();
             std::shared_ptr<Primitives> closest = nullptr;
-
-            // Cherche l'objet le plus proche
             for (auto &obj : scene) {
                 double t;
                 if (obj->hits(ray, t) && t < closestT) {
@@ -57,18 +53,15 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
                     closest = obj;
                 }
             }
-
             Color color(0, 0, 0);
             if (closest) {
                 Math::Point3D hitPoint = _cameraPosition + dir * closestT;
                 color = computeLighting(hitPoint, closest, light);
             }
-
             ppm << color.getR() << " " << color.getG() << " " << color.getB() << " ";
         }
         ppm << "\n";
     }
-
     ppm.close();
 }
 
