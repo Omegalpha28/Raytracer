@@ -24,7 +24,7 @@ RayTracer::Color RayTracer::Raytracer::computeLighting(
     return RayTracer::Color(r, g, b, base.getA());
 }
 
-void RayTracer::Raytracer::render()
+void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
 {
     _width = 200;
     _height = 200;
@@ -32,7 +32,7 @@ void RayTracer::Raytracer::render()
     _cameraPosition = Math::Point3D(0, 0, 0);
     std::vector<std::shared_ptr<Primitives>> scene;
     scene.push_back(std::make_shared<Sphere>(Math::Point3D(0, 0, -5), 1.0, Color(255, 0, 0)));
-    Light light;
+    Light light(Math::Point3D(), Color(255, 255, 255));
     std::ofstream ppm("output.ppm");
     ppm << "P3\n" << _width << " " << _height << "\n255\n";
     for (int y = 0; y < _height; ++y) {
@@ -60,4 +60,12 @@ void RayTracer::Raytracer::render()
         ppm << "\n";
     }
     ppm.close();
+}
+
+RayTracer::Raytracer::Raytracer(RayTracer::Parser &Parser)
+{
+    _width = Parser.getWidth();
+    _height = Parser.getHeight();
+    _fieldOfView = Parser.getFov();
+    _cameraPosition = Math::Point3D(0.0, 0.0, 0.0);
 }

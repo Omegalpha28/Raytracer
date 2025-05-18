@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Vector3D.hpp"
+#include "Parser.hpp"
 
 namespace RayTracer {
 
@@ -70,8 +71,9 @@ namespace RayTracer {
 
     class Light {
         public:
-            Light();
-            ~Light();
+            Light(const Math::Point3D &pos, const Color &col)
+            : _position(pos), _direction(0.0, 0.0, 0.0), _color(col) {};
+            ~Light() = default;
             Math::Vector3D getDirectionTo(const Math::Point3D &point) const {
                 Math::Vector3D dir = _position - point;
                 return dir / dir.length();
@@ -84,9 +86,10 @@ namespace RayTracer {
 
     class Raytracer {
         public:
+            Raytracer(RayTracer::Parser &Parser);
             Raytracer();
-            ~Raytracer();
-            void render();
+            ~Raytracer() = default;
+            void render(RayTracer::Parser &Parser);
             RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, const Light &light);
         private:
             int _width;
