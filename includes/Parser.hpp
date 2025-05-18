@@ -21,6 +21,10 @@ namespace RayTracer {
         float _fov;
         float _ambientLight;
         float _diffuseLight;
+        int _posX, _posY, _posZ;
+        int _rotX, _rotY, _rotZ;
+        int _dirX, _dirY, _dirZ;
+        int _pointPosX, _pointPosY, _pointPosZ;
         int parseCameraSettings();
         int parsePrimitives();
         int parseLights();
@@ -32,6 +36,19 @@ namespace RayTracer {
         int getWidth() const;
         int getHeight() const;
         float getFov() const;
+        public:
+        float getCameraPosX() const;
+        float getCameraPosY() const;
+        float getCameraPosZ() const;
+        float getCameraRotX() const;
+        float getCameraRotY() const;
+        float getCameraRotZ() const;
+        float getPointPosX() const;
+        float getPointPosY() const;
+        float getPointPosZ() const;
+        float getDirX() const;
+        float getDirY() const;
+        float getDirZ() const;
         float getAmbientLight() const;
         float getDiffuseLight() const;
     };
