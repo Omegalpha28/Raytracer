@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2025
-** bsraytracer
-** File description:
-** Parser
+ EPITECH PROJECT, 2025
+ bsraytracer
+ File description:
+ Parser
 */
 #include "../includes/RayTracer.hpp"
 #include "../includes/Errors.hpp"
@@ -32,7 +32,7 @@ int RayTracer::Parser::parseConfigFile(const std::string &filePath)
         return 84;
     } catch (const libconfig::ParseException &pex) {
         try {
-            std::string errorMsg = "Parse error at " + std::string(pex.getFile()) + ":" + 
+            std::string errorMsg = "Parse error at " + std::string(pex.getFile()) + ":" +
                                   std::to_string(pex.getLine()) + " - " + pex.getError();
             throw RayTracer::ParseError(errorMsg);
         } catch (const RayTracer::ParseError &error) {
@@ -151,6 +151,36 @@ int RayTracer::Parser::parsePrimitives()
             ));
         }
     }
+    // === Cubes ===
+    if (root.exists("cubes")) {
+        const libconfig::Setting &cubes = root["cubes"];
+        for (int i = 0; i < cubes.getLength(); ++i) {
+            const libconfig::Setting &c = cubes[i];
+            const libconfig::Setting &max = c["max"];
+            const libconfig::Setting &min = c["min"];
+            const libconfig::Setting &color = c["color"];
+
+            int maxX, maxY, maxZ, minX, minY, minZ;
+            max.lookupValue("x", maxX);
+            max.lookupValue("y", maxY);
+            max.lookupValue("z", maxZ);
+            min.lookupValue("x", minX);
+            min.lookupValue("y", minY);
+            min.lookupValue("z", minZ);
+
+            Math::Point3D max_point(maxX, maxY, maxZ);
+            Math::Point3D min_point(minX, minY, minZ);
+
+            int cr, cg, cb;
+            color.lookupValue("r", cr);
+            color.lookupValue("g", cg);
+            color.lookupValue("b", cb);
+
+            _scene.push_back(std::make_shared<Cube>(
+                max_point, min_point, Color(cr, cg, cb)
+            ));
+        }
+    }
     std::cout << "Primitives parsed" << std::endl;
     return 0;
 }
@@ -172,6 +202,9 @@ int RayTracer::Parser::parseLights()
             pt.lookupValue("x", x);
             pt.lookupValue("y", y);
             pt.lookupValue("z", z);
+            _pointPosX = x;
+            _pointPosY = y;
+            _pointPosZ = z;
             std::cout << "Point light " << i << ": (" << x << ", " << y << ", " << z << ")\n";
         }
     }
@@ -181,6 +214,9 @@ int RayTracer::Parser::parseLights()
         dir.lookupValue("x", dx);
         dir.lookupValue("y", dy);
         dir.lookupValue("z", dz);
+        _dirX = dx;
+        _dirY = dy;
+        _dirZ = dz;
         std::cout << "Directional light: (" << dx << ", " << dy << ", " << dz << ")\n";
     }
 

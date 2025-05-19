@@ -30,8 +30,11 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
     _height = Parser.getHeight();
     _fieldOfView = Parser.getFov();
     _cameraPosition = Math::Point3D( Parser.getCameraPosX(), Parser.getCameraPosY(), Parser.getCameraPosZ());
+    std::cout << "Camera position: " << _cameraPosition._x << ", " << _cameraPosition._y << ", " << _cameraPosition._z << "\n";
     std::vector<std::shared_ptr<Primitives>> scene = Parser.getScene();
+
     Math::Point3D lightPos( Parser.getPointPosX(), Parser.getPointPosY(), Parser.getPointPosZ());
+    std::cout << "Light position: " << lightPos._x << ", " << lightPos._y << ", " << lightPos._z << "\n";
     Color lightColor(255, 255, 255);
     Light light(lightPos, lightColor);
     std::ofstream ppm("output.ppm");

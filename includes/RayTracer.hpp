@@ -168,6 +168,7 @@ namespace RayTracer {
                 else return Math::Vector3D(0, 0, 1);
             }
             Color getColor() const override { return _color; }
+
         private:
             char _axis;
             double _position;
@@ -201,6 +202,8 @@ namespace RayTracer {
             bool hits(const Ray &ray, double &t) override;
             Math::Vector3D normalAt(const Math::Point3D &point) override;
             Color getColor() const override { return _color; };
+            Math::Point3D getOrigin() const { return _origin; }
+
         protected:
         private:
             Math::Point3D _origin;
@@ -209,5 +212,27 @@ namespace RayTracer {
             Color _color;
             std::shared_ptr<Triangle> _triangle1;
             std::shared_ptr<Triangle> _triangle2;
+    };
+
+    class Cube : public Primitives {
+        public:
+            Cube();
+            Cube(const Math::Point3D &max_point, const Math::Point3D &min_point, const Color &color);
+            ~Cube();
+            bool hits(const Ray &ray, double &t) override;
+            Math::Vector3D normalAt(const Math::Point3D &point) override;
+            Color getColor() const override { return _color; };
+
+        protected:
+        private:
+            Math::Point3D _max_point;  // Point minimum (coin inférieur gauche avant)
+            Math::Point3D _min_point;  // Point maximum (coin supérieur droit arrière)
+            Color _color;
+            std::shared_ptr<Rectangle3D> _rectangle1;
+            std::shared_ptr<Rectangle3D> _rectangle2;
+            std::shared_ptr<Rectangle3D> _rectangle3;
+            std::shared_ptr<Rectangle3D> _rectangle4;
+            std::shared_ptr<Rectangle3D> _rectangle5;
+            std::shared_ptr<Rectangle3D> _rectangle6;
     };
 };

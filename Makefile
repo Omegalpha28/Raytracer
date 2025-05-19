@@ -14,6 +14,11 @@ NAME = raytracer
 
 SRC = main.cpp              \
 		src/RayTracer.cpp   \
+		src/Plane.cpp   \
+		src/Sphere.cpp      \
+		src/Triangle.cpp   \
+		src/Rectangle3D.cpp \
+		src/Cube.cpp \
 		src/Raytracer2.cpp	\
 		src/Vector3D.cpp    \
 		src/Errors.cpp      \
