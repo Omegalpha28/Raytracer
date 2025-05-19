@@ -10,16 +10,18 @@
 RayTracer::Color RayTracer::Raytracer::computeLighting(
     const Math::Point3D &point,
     std::shared_ptr<Primitives> prim,
-    const RayTracer::Light &light
+    RayTracer::Parser &Parser
 ) {
+    float ambientIntensity = Parser.getAmbientLight();
+    float diffuseIntensity = Parser.getDiffuseLight();
+    Math::Point3D lightPos(Parser.getPointPosX(), Parser.getPointPosY(), Parser.getPointPosZ());
     Math::Vector3D normal = prim->normalAt(point);
-    Math::Vector3D lightDir = light.getDirectionTo(point);
-    double intensity = std::max(0.0, normal.dot(lightDir));
+    Math::Vector3D lightDir = (lightPos - point) / (lightPos - point).length();
+    double diffuse = std::max(0.0, normal.dot(lightDir));
     RayTracer::Color base = prim->getColor();
-
-    int r = std::min(255, static_cast<int>(base.getR() * intensity));
-    int g = std::min(255, static_cast<int>(base.getG() * intensity));
-    int b = std::min(255, static_cast<int>(base.getB() * intensity));
+    int r = std::min(255, static_cast<int>(base.getR() * (ambientIntensity + diffuse * diffuseIntensity)));
+    int g = std::min(255, static_cast<int>(base.getG() * (ambientIntensity + diffuse * diffuseIntensity)));
+    int b = std::min(255, static_cast<int>(base.getB() * (ambientIntensity + diffuse * diffuseIntensity)));
 
     return RayTracer::Color(r, g, b, base.getA());
 }
@@ -33,10 +35,6 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
     std::cout << "Camera position: " << _cameraPosition._x << ", " << _cameraPosition._y << ", " << _cameraPosition._z << "\n";
     std::vector<std::shared_ptr<Primitives>> scene = Parser.getScene();
 
-    Math::Point3D lightPos( Parser.getPointPosX(), Parser.getPointPosY(), Parser.getPointPosZ());
-    std::cout << "Light position: " << lightPos._x << ", " << lightPos._y << ", " << lightPos._z << "\n";
-    Color lightColor(255, 255, 255);
-    Light light(lightPos, lightColor);
     std::ofstream ppm("output.ppm");
     ppm << "P3\n" << _width << " " << _height << "\n255\n";
 
@@ -59,7 +57,7 @@ void RayTracer::Raytracer::render(RayTracer::Parser &Parser)
             Color color(0, 0, 0);
             if (closest) {
                 Math::Point3D hitPoint = _cameraPosition + dir * closestT;
-                color = computeLighting(hitPoint, closest, light);
+                color = computeLighting(hitPoint, closest, Parser);
             }
             ppm << color.getR() << " " << color.getG() << " " << color.getB() << " ";
         }
