@@ -235,47 +235,47 @@ int RayTracer::Parser::getHeight() const
     return _height;
 }
 
-float RayTracer::Parser::getFov() const
+double RayTracer::Parser::getFov() const
 {
     return _fov;
 }
 
-float RayTracer::Parser::getAmbientLight() const
+double RayTracer::Parser::getAmbientLight() const
 {
     return _ambientLight;
 }
 
-float RayTracer::Parser::getDiffuseLight() const
+double RayTracer::Parser::getDiffuseLight() const
 {
     return _diffuseLight;
 }
 
-float RayTracer::Parser::getPointPosX() const
+double RayTracer::Parser::getPointPosX() const
 {
     return _pointPosX;
 }
 
-float RayTracer::Parser::getPointPosY() const
+double RayTracer::Parser::getPointPosY() const
 {
     return _pointPosY;
 }
 
-float RayTracer::Parser::getPointPosZ() const
+double RayTracer::Parser::getPointPosZ() const
 {
     return _pointPosZ;
 }
 
-float RayTracer::Parser::getDirX() const
+double RayTracer::Parser::getDirX() const
 {
     return _dirX;
 }
 
-float RayTracer::Parser::getDirY() const
+double RayTracer::Parser::getDirY() const
 {
     return _dirY;
 }
 
-float RayTracer::Parser::getDirZ() const
+double RayTracer::Parser::getDirZ() const
 {
     return _dirZ;
 }
@@ -285,32 +285,32 @@ std::vector<std::shared_ptr<RayTracer::Primitives>> RayTracer::Parser::getScene(
     return _scene;
 }
 
-float RayTracer::Parser::getCameraPosX() const
+double RayTracer::Parser::getCameraPosX() const
 {
     return _posX;
 }
 
-float RayTracer::Parser::getCameraPosY() const
+double RayTracer::Parser::getCameraPosY() const
 {
     return _posY;
 }
 
-float RayTracer::Parser::getCameraPosZ() const
+double RayTracer::Parser::getCameraPosZ() const
 {
     return _posZ;
 }
 
-float RayTracer::Parser::getCameraRotX() const
+double RayTracer::Parser::getCameraRotX() const
 {
     return _rotX;
 }
 
-float RayTracer::Parser::getCameraRotY() const
+double RayTracer::Parser::getCameraRotY() const
 {
     return _rotY;
 }
 
-float RayTracer::Parser::getCameraRotZ() const
+double RayTracer::Parser::getCameraRotZ() const
 {
     return _rotZ;
 }

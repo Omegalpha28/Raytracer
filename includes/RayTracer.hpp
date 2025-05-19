@@ -88,9 +88,9 @@ namespace RayTracer {
         libconfig::Config _cfg;
         int _width;
         int _height;
-        float _fov;
-        float _ambientLight;
-        float _diffuseLight;
+        double _fov;
+        double _ambientLight;
+        double _diffuseLight;
         int _posX, _posY, _posZ;
         int _rotX, _rotY, _rotZ;
         int _dirX, _dirY, _dirZ;
@@ -106,23 +106,23 @@ namespace RayTracer {
         void displayHelp() const;
         int getWidth() const;
         int getHeight() const;
-        float getFov() const;
+        double getFov() const;
         public:
         std::vector<std::shared_ptr<Primitives>> getScene() const;
-        float getCameraPosX() const;
-        float getCameraPosY() const;
-        float getCameraPosZ() const;
-        float getCameraRotX() const;
-        float getCameraRotY() const;
-        float getCameraRotZ() const;
-        float getPointPosX() const;
-        float getPointPosY() const;
-        float getPointPosZ() const;
-        float getDirX() const;
-        float getDirY() const;
-        float getDirZ() const;
-        float getAmbientLight() const;
-        float getDiffuseLight() const;
+        double getCameraPosX() const;
+        double getCameraPosY() const;
+        double getCameraPosZ() const;
+        double getCameraRotX() const;
+        double getCameraRotY() const;
+        double getCameraRotZ() const;
+        double getPointPosX() const;
+        double getPointPosY() const;
+        double getPointPosZ() const;
+        double getDirX() const;
+        double getDirY() const;
+        double getDirZ() const;
+        double getAmbientLight() const;
+        double getDiffuseLight() const;
     };
 
     class Raytracer {
