@@ -68,16 +68,43 @@ namespace RayTracer {
             virtual Math::Vector3D normalAt(const Math::Point3D &point) = 0;
     };
 
-    class Light {
+    class ILights {
+        public:
+            ILights() = default;
+            virtual ~ILights() = default;
+            virtual Math::Vector3D getDirectionTo(const Math::Point3D &point) const = 0;
+            virtual float getIntensity() const = 0;
+    };
+
+    class Light : public ILights {
         public:
             Light(const Math::Point3D &pos, const Color &col, float intensity = 1.0f)
                 : _intensity(intensity), _position(pos), _direction(0.0, 0.0, 0.0), _color(col) {};
             ~Light() = default;
-            Math::Vector3D getDirectionTo(const Math::Point3D &point) const {
+            Math::Vector3D getDirectionTo(const Math::Point3D &point) const override {
                 Math::Vector3D dir = _position - point;
                 return dir / dir.length();
             };
-            float getIntensity() const {
+            float getIntensity() const override {
+                return _intensity;
+            };
+        private:
+            Math::Point3D _position;
+            Math::Vector3D _direction;
+            Color _color;
+            float _intensity;
+    };
+
+    class AmbientLight : public ILights {
+        public:
+            AmbientLight(const Math::Point3D &pos, const Color &col, float intensity = 1.0f)
+                : _intensity(intensity), _position(pos), _direction(0.0, 0.0, 0.0), _color(col) {};
+            ~AmbientLight() = default;
+            Math::Vector3D getDirectionTo(const Math::Point3D &point) const override {
+                Math::Vector3D dir = _position - point;
+                return dir / dir.length();
+            };
+            float getIntensity() const override {
                 return _intensity;
             };
         private:
@@ -135,7 +162,12 @@ namespace RayTracer {
             Raytracer();
             ~Raytracer() = default;
             void render(Parser &Parser);
-            RayTracer::Color computeLighting(const Math::Point3D &point, std::shared_ptr<Primitives> prim, Parser &Parser);
+            RayTracer::Color computeLighting( const Math::Point3D &point,
+                std::shared_ptr<Primitives> prim,
+                std::shared_ptr<RayTracer::ILights> light,
+                std::shared_ptr<RayTracer::ILights> light2,
+                RayTracer::Parser &Parser
+            );
         private:
             int _width;
             int _height;
